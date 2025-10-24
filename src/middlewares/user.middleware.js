@@ -26,6 +26,15 @@ export const validateCreateUser = (req, res, next) => {
       return res.status(StatusCodes.BAD_REQUEST).json(errorResponse);
     }
 
+    if (userName.length < 4 || userName.length > 15) {
+      errorResponse.message = 'Validation failed while creating user';
+      errorResponse.error = new AppError(
+        ['User Name must be between 4-15 characters'],
+        StatusCodes.BAD_REQUEST
+      );
+      return res.status(StatusCodes.BAD_REQUEST).json(errorResponse);
+    }
+
     if (password.length < 6) {
       errorResponse.message = 'Validation failed while creating user';
       errorResponse.error = new AppError(
