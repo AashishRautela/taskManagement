@@ -81,6 +81,16 @@ export const getIssues = async (query) => {
     const sort = { updatedAt: -1 };
     const customFilters = {};
 
+    //tile or description
+
+    if (query.search) {
+      const searchRegex = new RegExp(query.search, 'i');
+      customFilters.$or = [
+        { title: searchRegex },
+        { description: searchRegex }
+      ];
+    }
+
     // issue type filter
     if (query.type) {
       customFilters.type = {
@@ -108,6 +118,35 @@ export const getIssues = async (query) => {
         $in: Array.isArray(query.assignee) ? query.assignee : [query.assignee]
       };
     }
+
+    if (query.dueDate) {
+      const today = new Date();
+      const startOfWeek = new Date(today);
+      startOfWeek.setDate(today.getDate() - today.getDay());
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+      switch (query.dueDate) {
+        case 'today':
+          customFilters.dueDate = {
+            $gte: new Date(today.setHours(0, 0, 0, 0)),
+            $lte: new Date(today.setHours(23, 59, 59, 999))
+          };
+          break;
+
+        case 'thisWeek':
+          customFilters.dueDate = {
+            $gte: startOfWeek,
+            $lte: endOfWeek
+          };
+          break;
+
+        case 'overdue':
+          customFilters.dueDate = { $lt: new Date() };
+          break;
+      }
+    }
+
     customFilters.project = query.projectId;
     const { data, meta } = await IssueRepository.find(customFilters, {
       page,
