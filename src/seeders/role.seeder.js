@@ -29,6 +29,14 @@ const roles = [
       project: ['view'],
       member: ['view']
     }
+  },
+  {
+    name: 'watcher',
+    permissions: {
+      project: ['view'],
+      task: ['view'],
+      member: ['view']
+    }
   }
 ];
 

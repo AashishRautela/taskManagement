@@ -4,7 +4,8 @@
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "prepare": "husky",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "seed:roles": "node src/seeders/role.seeder.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
