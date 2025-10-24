@@ -28,8 +28,6 @@ class IssueRepository extends CrudRepository {
           path: 'updatedBy',
           select: '-createdAt -updatedAt -email -__v'
         },
-        { path: 'epic', select: '_id title key' },
-        { path: 'parent', select: '_id title type' },
         { path: 'stage', select: '_id name color' }
       ])
       .select('-project');
@@ -44,7 +42,7 @@ class IssueRepository extends CrudRepository {
     const skip = (page - 1) * limit;
 
     const select =
-      '-project -parent -id -epic -createdBy -updatedBy -reporter -description -spentEstimate -overrunMinutes -remainingEstimate -updatedAt -createdAt -attachments -watchers -labels';
+      '-project  -id -createdBy -updatedBy -reporter -description -spentEstimate -overrunMinutes -remainingEstimate -updatedAt -createdAt -attachments -watchers -labels';
 
     const [response, total] = await Promise.all([
       this.model
