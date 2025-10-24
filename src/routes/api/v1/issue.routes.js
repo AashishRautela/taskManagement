@@ -31,4 +31,11 @@ router.get(
   IssueController.getIssueDetails
 );
 
+router.patch(
+  '/:id/:projectId',
+  AuthMiddleware.authenticateUser,
+  AuthorizeAccess.authorizeAccess({ module, action: 'edit' }),
+  IssueController.updateIssue
+);
+
 export default router;

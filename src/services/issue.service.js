@@ -2,8 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import { IssueRepository, ProjectRepository } from '../repository/index.js';
 import { ENUMS } from '../utils/common/index.js';
 import AppError from '../utils/errors/appError.js';
-const issue = ENUMS.ISSUE;
 const priority = ENUMS.PRIORITY;
+import { getFieldToUpdate } from '../utils/helpers/index.js';
 
 export const createIssue = async (data, user) => {
   try {
@@ -160,6 +160,33 @@ export const getIssues = async (query) => {
 
     throw new AppError(
       ['Something went wrong while getting issues'],
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
+export const updateIssue = async (id, data) => {
+  try {
+    const allowedfields = [
+      'title',
+      'priority',
+      'assignee',
+      'description',
+      'reporter',
+      'stage'
+    ];
+    const fieldsToBeUpdated = getFieldToUpdate(allowedfields, data);
+    const project = await IssueRepository.findByIdAndUpdate(
+      id,
+      fieldsToBeUpdated
+    );
+    return project;
+  } catch (error) {
+    console.log('error in issue details--->', error);
+    if (error instanceof AppError) throw error;
+
+    throw new AppError(
+      ['Something went wrong while updating issue'],
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }

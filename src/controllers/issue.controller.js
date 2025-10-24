@@ -29,3 +29,12 @@ export const getIssues = asyncHandler(async (req, res) => {
   successResponse.meta = meta;
   return res.status(StatusCodes.CREATED).send(successResponse);
 });
+
+export const updateIssue = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const data = req.body;
+  const successResponse = SuccessResponse();
+
+  await IssueService.updateIssue(id, data);
+  return res.status(StatusCodes.OK).send(successResponse);
+});
