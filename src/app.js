@@ -13,7 +13,11 @@ app.use(express.static('public'));
 
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'https://tak-management.netlify.app/'],
+    origin: [
+      'http://localhost:5173',
+      'https://tak-management.netlify.app/',
+      'https://tak-management.netlify.app'
+    ],
     credentials: true
   })
 );
