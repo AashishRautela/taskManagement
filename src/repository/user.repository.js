@@ -5,17 +5,6 @@ class UserRepository extends CrudRepository {
     super(User);
   }
 
-  async verifyUser(email) {
-    const response = this.model.updateOne(
-      {
-        email: email
-      },
-      { $set: { isVerified: true } },
-      { new: true }
-    );
-    return response;
-  }
-
   async findOneWithPassword(filter) {
     return await this.model.findOne(filter).select('+password');
   }

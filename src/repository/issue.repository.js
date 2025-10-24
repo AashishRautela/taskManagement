@@ -14,19 +14,19 @@ class IssueRepository extends CrudRepository {
       .populate([
         {
           path: 'createdBy',
-          select: '-isVerified -createdAt -updatedAt -email -__v'
+          select: '-createdAt -updatedAt -email -__v'
         },
         {
           path: 'assignee',
-          select: '-isVerified -createdAt -updatedAt -email -__v'
+          select: '-createdAt -updatedAt -email -__v'
         },
         {
           path: 'reporter',
-          select: '-isVerified -createdAt -updatedAt -email -__v'
+          select: '-createdAt -updatedAt -email -__v'
         },
         {
           path: 'updatedBy',
-          select: '-isVerified -createdAt -updatedAt -email -__v'
+          select: '-createdAt -updatedAt -email -__v'
         },
         { path: 'epic', select: '_id title key' },
         { path: 'parent', select: '_id title type' },
@@ -52,7 +52,7 @@ class IssueRepository extends CrudRepository {
         .populate([
           {
             path: 'assignee',
-            select: '-isVerified -createdAt -updatedAt -email -__v'
+            select: '-createdAt -updatedAt -email -__v'
           },
           { path: 'stage', select: '_id name color' }
         ])

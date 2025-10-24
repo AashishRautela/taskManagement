@@ -10,10 +10,6 @@ export const login = async (data) => {
       throw new AppError(['User not found'], StatusCodes.NOT_FOUND);
     }
 
-    if (!user.isVerified) {
-      throw new AppError(['User not found'], StatusCodes.NOT_FOUND);
-    }
-
     const isPasswordValid = await user.validatePassword(password);
     if (!isPasswordValid) {
       throw new AppError(

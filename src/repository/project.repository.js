@@ -9,12 +9,12 @@ class ProjectRepository extends CrudRepository {
 
   async findByPk(data) {
     const response = await this.model.findById(data).populate([
-      { path: 'createdBy', select: '-isVerified -createdAt -updatedAt -__v' },
-      { path: 'updatedBy', select: '-isVerified -createdAt -updatedAt -__v' },
-      { path: 'manager', select: '-isVerified -createdAt -updatedAt -__v' },
+      { path: 'createdBy', select: '-createdAt -updatedAt -__v' },
+      { path: 'updatedBy', select: '-createdAt -updatedAt -__v' },
+      { path: 'manager', select: '-createdAt -updatedAt -__v' },
       {
         path: 'defaultAssignee',
-        select: '-isVerified -createdAt -updatedAt -__v'
+        select: '-createdAt -updatedAt -__v'
       }
     ]);
 
