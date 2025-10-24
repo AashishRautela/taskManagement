@@ -19,8 +19,8 @@ router.post(
 
 router.get(
   '/',
-  // AuthMiddleware.authenticateUser,
-  // AuthorizeAccess.authorizeAccess({ module, action: 'view' }),
+  AuthMiddleware.authenticateUser,
+  AuthorizeAccess.authorizeAccess({ module, action: 'view' }),
   IssueController.getIssues
 );
 

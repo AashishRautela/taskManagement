@@ -14,7 +14,7 @@ export const authorizeAccess = ({ module, action }) => {
     try {
       const user = req.user;
       const projectId =
-        req.params.projectId || req.body.projectId || req.query.projectId;
+        req?.params?.projectId || req?.body?.projectId || req?.query?.projectId;
 
       if (
         !mongoose.isValidObjectId(user._id) ||
