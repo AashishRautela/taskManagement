@@ -5,6 +5,7 @@ import {
 } from '../repository/index.js';
 import { ErrorResponse } from '../utils/common/index.js';
 import AppError from '../utils/errors/appError.js';
+import mongoose from 'mongoose';
 
 export const authorizeAccess = ({ module, action }) => {
   return async (req, res, next) => {
@@ -14,6 +15,17 @@ export const authorizeAccess = ({ module, action }) => {
       const user = req.user;
       const projectId =
         req.params.projectId || req.body.projectId || req.query.projectId;
+
+      if (
+        !mongoose.isValidObjectId(user._id) ||
+        !mongoose.isValidObjectId(projectId)
+      ) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid project or user ID',
+          data: {}
+        });
+      }
 
       if (!projectId) {
         errorResponse.message = 'Access validation failed';
@@ -26,7 +38,9 @@ export const authorizeAccess = ({ module, action }) => {
 
       const member = await ProjectMemberRepository.findOne({
         user: user._id,
-        project: projectId,
+        project: mongoose.isValidObjectId(projectId)
+          ? new mongoose.Types.ObjectId(projectId)
+          : projectId,
         status: 'active'
       });
 

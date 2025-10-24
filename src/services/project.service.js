@@ -152,7 +152,13 @@ export const updateProject = async (id, data) => {
 
 export const deleteProject = async (data) => {
   try {
-    await ProjectRepository.findByIdAndDelete(data);
+    const { user, projectId } = data;
+    const payload = {
+      isDeleted: true,
+      deletedBy: user._id,
+      deletedAt: Date.now()
+    };
+    await ProjectRepository.findByIdAndUpdate(projectId, payload);
   } catch (error) {
     console.error('error -->', error);
 

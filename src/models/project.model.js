@@ -71,7 +71,14 @@ const projectSchema = mongoose.Schema(
       type: Number,
       default: 0,
       min: 0
-    }
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+      index: true
+    },
+    deletedAt: { type: Date },
+    deletedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   },
   { timestamps: true }
 );

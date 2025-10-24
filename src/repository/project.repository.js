@@ -1,26 +1,27 @@
 import CrudRepository from './crud.repository.js';
 import { Project, ProjectMember } from '../models/index.js';
 import AppError from '../utils/errors/appError.js';
+import { StatusCodes } from 'http-status-codes';
 
 class ProjectRepository extends CrudRepository {
   constructor() {
     super(Project);
   }
 
-  async findByPk(data) {
-    const response = await this.model.findById(data).populate([
-      { path: 'createdBy', select: '-createdAt -updatedAt -__v' },
-      { path: 'updatedBy', select: '-createdAt -updatedAt -__v' },
-      { path: 'manager', select: '-createdAt -updatedAt -__v' },
-      {
-        path: 'defaultAssignee',
-        select: '-createdAt -updatedAt -__v'
-      }
-    ]);
+  async findByPk(id) {
+    const response = await this.model
+      .findOne({ _id: id, isDeleted: { $ne: true } })
+      .populate([
+        { path: 'createdBy', select: '-createdAt -updatedAt -__v' },
+        { path: 'updatedBy', select: '-createdAt -updatedAt -__v' },
+        { path: 'manager', select: '-createdAt -updatedAt -__v' },
+        { path: 'defaultAssignee', select: '-createdAt -updatedAt -__v' }
+      ]);
 
     if (!response) {
       throw new AppError(['Project Not found'], StatusCodes.NOT_FOUND);
     }
+
     return response;
   }
 
@@ -36,7 +37,14 @@ class ProjectRepository extends CrudRepository {
           from: 'projects',
           let: { pid: '$project' },
           pipeline: [
-            { $match: { $expr: { $eq: ['$_id', '$$pid'] } } },
+            {
+              $match: {
+                $and: [
+                  { $expr: { $eq: ['$_id', '$$pid'] } },
+                  { isDeleted: { $ne: true } }
+                ]
+              }
+            },
             {
               $project: {
                 name: 1,
