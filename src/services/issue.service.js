@@ -36,7 +36,8 @@ export const createIssue = async (data, user) => {
       reporter,
       description: data.description,
       stage: data.stage,
-      key
+      key,
+      dueDate: data.dueDate
     };
 
     const issue = await IssueRepository.create(payload);
