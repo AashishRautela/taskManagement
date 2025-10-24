@@ -30,3 +30,10 @@ export const getUserDetails = asyncHandler(async (req, res) => {
   successResponse.data = user;
   return res.status(StatusCodes.CREATED).json(successResponse);
 });
+
+export const getUsers = asyncHandler(async (req, res) => {
+  const successResponse = SuccessResponse();
+  const users = await UserService.getUsers();
+  successResponse.data = users;
+  return res.status(StatusCodes.OK).json(successResponse);
+});

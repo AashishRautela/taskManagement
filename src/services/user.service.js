@@ -49,3 +49,21 @@ export const getUserDetails = async (data) => {
     );
   }
 };
+
+export const getUsers = async (data) => {
+  try {
+    const users = await UserRepository.findAll();
+    const formattedUsers = users.map((user) => ({
+      _id: user._id,
+      full_name: `${user.firstName || ''} ${user.lastName || ''}`.trim()
+    }));
+
+    return formattedUsers;
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new AppError(
+      ['Something went wrong while getting users'],
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+};

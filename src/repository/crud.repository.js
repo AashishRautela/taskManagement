@@ -27,6 +27,14 @@ class CrudRepository {
     return response;
   }
 
+  async findAll(data) {
+    const response = await this.model.find(data);
+    if (!response) {
+      throw new AppError(['Resouce Not found'], StatusCodes.NOT_FOUND);
+    }
+    return response;
+  }
+
   async findOne(data) {
     const response = await this.model.findOne(data);
     return response;

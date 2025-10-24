@@ -10,5 +10,6 @@ router.get(
   AuthMiddleware.authenticateUser,
   UserController.getUserDetails
 );
+router.get('/', AuthMiddleware.authenticateUser, UserController.getUsers);
 
 export default router;
